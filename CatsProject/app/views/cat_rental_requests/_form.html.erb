@@ -1,0 +1,25 @@
+<% if cat_rental_request.persisted? %>
+  <% action, method, button_text = cat_rental_request_url(cat_rental_request), "PATCH", "Update Rental Request" %>
+<% else %>
+  <% action, method, button_text = cat_rental_requests_url, "POST", "Submit Cat Rental Request" %>
+<% end %>
+<form class="" action="<%=action%>" method="<%=method%>" id="cat_rental_request_submit_form">
+  <input type="hidden" name="_method" value="<%= method %>">
+  <label for="cat_rental_request_cat_id">Choose a Cat: </label>
+  <select class="" name="cat_rental_request[cat_id]">
+    <option disabled<% if cat_rental_request.cat_id.nil? %> selected <% end %>>Select a Cat</option>
+    <% Cat.all.each do |cat| %>
+      <option value="<%= cat.id %>" <% if cat_rental_request.cat_id == cat.id %> selected <% end %>><%= cat.name %></option>
+    <% end %>
+  </select>
+  <br><br><br>
+  <label for="cat_rental_request_start_date">Start Date: </label>
+  <input type="date" name="cat_rental_request[start_date]" value="<%= cat_rental_request.start_date %>">
+  <br><br><br>
+  <label for="cat_rental_request_end_date">End Date: </label>
+  <input type="date" name="cat_rental_request[end_date]" value="<%= cat_rental_request.end_date %>">
+  <br><br>
+  <input type="submit" form="cat_rental_request_submit_form" value="<%=button_text%>">
+</form>
+<br>
+<%= button_to "Cancel", cat_rental_requests_url, method: :get %>
